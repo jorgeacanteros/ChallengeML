@@ -5,72 +5,54 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ml.challengeml.R
 import com.ml.challengeml.contract.BuscadorContract
 import com.ml.challengeml.databinding.ActivityMainBinding
 import com.ml.challengeml.model.ProductModel
 import com.ml.challengeml.model.SearchResponse
 import com.ml.challengeml.presenter.BuscadorPresenter
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 
-class MainActivity : AppCompatActivity() , SearchView.OnQueryTextListener, BuscadorContract.view {
 
-    private lateinit var buscadorPresenter: BuscadorPresenter
+class MainActivity : AppCompatActivity()  {
+
+
+    private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
-    private lateinit var adapterSearch: SearchAdapter
-    private var emptyList = mutableListOf<ProductModel>()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         init()
+
     }
 
     private fun init() {
-        adapterSearch= SearchAdapter(emptyList)
-        buscadorPresenter= BuscadorPresenter()
-        binding.txtSearch.setOnQueryTextListener(this)
-        binding.recyProduct.layoutManager = LinearLayoutManager(this)
-        binding.recyProduct.adapter= adapterSearch
+      //  navController= findNavController(R.id.nav_host_fragment)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+        NavigationUI.setupActionBarWithNavController(this,navController)
     }
 
-    override  fun onQueryTextSubmit(query: String?): Boolean {
 
-        /*LLevar esta logica al presenter*/
-
-
-            if (!query.isNullOrEmpty()) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    val response =buscadorPresenter.buscar(query)
-                    runOnUiThread {
-                        if (response.isSuccessful) {
-                            val product: List<ProductModel> = response.body()?.results ?: emptyList()
-                                emptyList.clear()
-                                emptyList.addAll(product)
-                                adapterSearch.notifyDataSetChanged()
-
-                        }
-                        else Toast.makeText(applicationContext,"error al cargar",Toast.LENGTH_LONG).show()
-
-                    }
-                }
-
-
-            }
-
-
-        return false
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp()
     }
 
-    override fun onQueryTextChange(newText: String?): Boolean {
-        return false
-    }
+
+
 
 
 }

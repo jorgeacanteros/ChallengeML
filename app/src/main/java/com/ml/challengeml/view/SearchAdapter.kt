@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ml.challengeml.R
-import com.ml.challengeml.contract.BuscadorContract
 import com.ml.challengeml.databinding.ItemProductBinding
 import com.ml.challengeml.model.ProductModel
 import com.squareup.picasso.Picasso
@@ -13,7 +12,7 @@ import com.squareup.picasso.Picasso
 /**
  * Created by Jorge on 23,febrero,2021
  */
-class SearchAdapter(val listSeach:List<ProductModel>): RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
+class SearchAdapter(val listSeach:List<ProductModel>, private val itemClick: OnProductClickListener): RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
@@ -27,9 +26,7 @@ class SearchAdapter(val listSeach:List<ProductModel>): RecyclerView.Adapter<Sear
 
     override fun getItemCount(): Int = listSeach.size
 
-
-
-    class SearchViewHolder(view: View): RecyclerView.ViewHolder(view){
+    inner class SearchViewHolder(view: View): RecyclerView.ViewHolder(view){
         val view = view
         val binding= ItemProductBinding.bind(view)
 
@@ -38,10 +35,16 @@ class SearchAdapter(val listSeach:List<ProductModel>): RecyclerView.Adapter<Sear
             Picasso.with(view.context).load(product.imagenProduct).into(binding.imgItem)
             binding.itemTitle.text = product.titulo
             binding.itemPrice.text = product.price.toString()
+            view.setOnClickListener{
+                itemClick.onProductClick(product)
+            }
 
         }
     }
 
+    interface OnProductClickListener{
+        fun onProductClick(product: ProductModel)
+    }
 
 }
 
