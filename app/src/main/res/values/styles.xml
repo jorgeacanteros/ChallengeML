@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.ChallengeML.text">
+       <item name="android:layout_height">45dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Theme.ChallengeML.text1">
+        <item name="android:layout_height">45dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">#FF757575</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+</resources>

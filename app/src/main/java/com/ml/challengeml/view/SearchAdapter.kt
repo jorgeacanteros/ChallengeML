@@ -34,7 +34,7 @@ class SearchAdapter(val listSeach:List<ProductModel>, private val itemClick: OnP
 
             Picasso.with(view.context).load(product.imagenProduct).into(binding.imgItem)
             binding.itemTitle.text = product.titulo
-            binding.itemPrice.text = product.price.toString()
+            binding.itemPrice.text = "$"+product.price.toString()
             view.setOnClickListener{
                 itemClick.onProductClick(product)
             }

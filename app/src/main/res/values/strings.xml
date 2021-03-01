@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">ChallengeML</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="searchTextDefault">oferta</string>
+    <string name="searchBackgroundText">Buscar en Mercado Libre</string>
+    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <string name="mjsError">Parece que algo salió mal</string>
+
+
+
 </resources>

@@ -1,20 +1,21 @@
 package com.ml.challengeml.view
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
+import com.ml.challengeml.R
 import com.ml.challengeml.contract.DetailProductContract
 import com.ml.challengeml.databinding.FragmentDetailSearchBinding
 import com.ml.challengeml.model.DetailProductModel
 import com.ml.challengeml.model.PictureModel
 import com.ml.challengeml.model.ProductModel
 import com.ml.challengeml.presenter.DetailSearchPresenter
-import kotlinx.android.synthetic.main.fragment_detail_search.*
-import kotlinx.android.synthetic.main.fragment_search.*
 
 
 class DetailSearchFragment : Fragment() , DetailProductContract.view{
@@ -38,7 +39,11 @@ class DetailSearchFragment : Fragment() , DetailProductContract.view{
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
       binding= FragmentDetailSearchBinding.inflate(layoutInflater)
         requireArguments().let {
             product= it.getParcelable("product")!!
@@ -91,6 +96,17 @@ class DetailSearchFragment : Fragment() , DetailProductContract.view{
         }
         //   emptyList.addAll(product)
         adapterSlider.notifyDataSetChanged()
+    }
+
+    override fun showError() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Error de Servicio")
+        builder.setMessage(R.string.mjsError)
+        builder.setPositiveButton(
+            "Volver"
+        ) { dialog, which -> findNavController().navigate(R.id.searchFragment) }
+        val dialog = builder.create()
+        dialog.show()
     }
 
     override fun setData(detailProductModel: DetailProductModel) {

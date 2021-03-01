@@ -18,5 +18,12 @@
         <action
             android:id="@+id/action_searchFragment_to_detailSearchFragment"
             app:destination="@id/detailSearchFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_errorFragment"
+            app:destination="@id/errorFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/errorFragment"
+        android:name="com.ml.challengeml.view.ErrorFragment"
+        android:label="ErrorFragment" />
 </navigation>

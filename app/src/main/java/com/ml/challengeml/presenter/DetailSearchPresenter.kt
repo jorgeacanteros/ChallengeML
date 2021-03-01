@@ -28,14 +28,19 @@ class DetailSearchPresenter(fragment: DetailSearchFragment, productModel:Product
     private var product: ProductModel = productModel
     private  lateinit var productDetail : DetailProductModel
     private var interactor: DetailSearchService = DetailSearchService()
+    var error: Boolean = false
 
     override  fun buscarDetalle()  {
+
         CoroutineScope(Dispatchers.IO).launch {
             val response: Response<DetaidProductResponse>? = interactor?.DetailSearchProduct(product.id)
-            Log.e("informacion", response.toString())
-            createProductDetail(response?.body(),buscarDescription())
+            if(response?.code() != 200){
+                error=true
+            }
+            else createProductDetail(response?.body(),buscarDescription())
             view.activity?.runOnUiThread {
-                view.setData(productDetail)
+                if(error) view.showError()
+                else view.setData(productDetail)
             }
         }
 
@@ -53,9 +58,11 @@ class DetailSearchPresenter(fragment: DetailSearchFragment, productModel:Product
     override suspend fun buscarDescription(): String {
 
         val response: Response<DescriptionProductResponse>? =interactor?.DescriptionProduct(product.id)
-
-        Log.e("informacion",response.toString())
-        return response!!.body()?.plain_text!!
+        if(response?.code() != 200){
+            error=true
+            return ""
+        }
+        else return response!!.body()?.plain_text!!
 
     }
 

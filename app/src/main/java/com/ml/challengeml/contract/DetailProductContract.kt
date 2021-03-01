@@ -12,7 +12,7 @@ interface DetailProductContract {
         suspend fun buscarDescription(): String
     }
     interface view{
-
+        fun showError()
         fun setData(detailProductModel: DetailProductModel)
 
     }
