@@ -39,25 +39,26 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 
-
+/**
+ * Created by Jorge on 23,febrero,2021
+ * Fragment donde se va a mostrar el campo search y el resultado del mismo
+ */
 
 class SearchFragment : Fragment(), SearchView.OnQueryTextListener, BuscadorContract.view, SearchAdapter.OnProductClickListener {
 
     private lateinit var buscadorPresenter: BuscadorPresenter
-    private lateinit var adapterSearch: SearchAdapter
-    private var emptyList = mutableListOf<ProductModel>()
+    lateinit var adapterSearch: SearchAdapter
+    var emptyList = mutableListOf<ProductModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,49 +66,36 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener, BuscadorContr
         init()
     }
 
+    /**
+     * inicializa los atributos
+     */
     private fun init() {
-        adapterSearch= SearchAdapter(emptyList, this)
-        buscadorPresenter= BuscadorPresenter()
+        adapterSearch = SearchAdapter(emptyList, this)
+        buscadorPresenter = BuscadorPresenter(this)
         txtSearch.setOnQueryTextListener(this)
         recyProduct.layoutManager = LinearLayoutManager(requireContext())
-        recyProduct.adapter= adapterSearch
+        recyProduct.adapter = adapterSearch
     }
 
-    override  fun onQueryTextSubmit(query: String?): Boolean {
-
-        /*LLevar esta logica al presenter*/
-
-
+    /**
+     * implementacion de la búsqueda
+     */
+    override fun onQueryTextSubmit(query: String?): Boolean {
         if (!query.isNullOrEmpty()) {
-            CoroutineScope(Dispatchers.IO).launch {
-                val response = buscadorPresenter.buscar(query)
-                getActivity()?.runOnUiThread{
-                    if (response.isSuccessful) {
-                        val product: List<ProductModel> = response.body()?.results ?: emptyList()
-                        emptyList.clear()
-                        emptyList.addAll(product)
-                        adapterSearch.notifyDataSetChanged()
-
-                    }
-                //    else Toast.makeText(applicationContext,"error al cargar", Toast.LENGTH_LONG).show()
-
-                }
-            }
-
-
+            buscadorPresenter.buscar(query)
         }
-
-
         return false
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
         return false
     }
-
+    /**
+     * acción de click sobre CardView de un producto en particular, se va al fragment del detalle
+     */
     override fun onProductClick(product: ProductModel) {
-        val bundle= Bundle()
-        bundle.putParcelable("product",product)
-        findNavController().navigate(R.id.detailSearchFragment,bundle)
+        val bundle = Bundle()
+        bundle.putParcelable("product", product)
+        findNavController().navigate(R.id.detailSearchFragment, bundle)
     }
 }

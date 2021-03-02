@@ -6,7 +6,7 @@ import retrofit2.Response
 
 interface BuscadorContract {
     interface presenter{
-        suspend fun buscar(product: String): Response<SearchResponse>
+         fun buscar(product: String)
     }
     interface view{
 

@@ -17,36 +17,34 @@ import com.ml.challengeml.model.PictureModel
 import com.ml.challengeml.model.ProductModel
 import com.ml.challengeml.presenter.DetailSearchPresenter
 
-
-class DetailSearchFragment : Fragment() , DetailProductContract.view{
+/**
+ * Created by Jorge on 27,febrero,2021
+ */
+class DetailSearchFragment : Fragment(), DetailProductContract.view {
 
     private lateinit var binding: FragmentDetailSearchBinding
-    private  lateinit var  adapterSlider: SliderAdapter
+    private lateinit var adapterSlider: SliderAdapter
     private var emptyList = mutableListOf<String>()
-    private  lateinit var presenter: DetailSearchPresenter
+    private lateinit var presenter: DetailSearchPresenter
     private lateinit var viewPager: ViewPager2
     private lateinit var product: ProductModel
 
-    //var listaejemplo: List<String> = listOf("https://images.dog.ceo/breeds/hound-afghan/n02088094_1222.jpg",
-                                           //  "https://images.dog.ceo/breeds/hound-afghan/n02088094_1259.jpg",
-                                          //  "https://images.dog.ceo/breeds/hound-afghan/n02088094_12945.jpg")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
 
         }
-
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
-      binding= FragmentDetailSearchBinding.inflate(layoutInflater)
+        binding = FragmentDetailSearchBinding.inflate(layoutInflater)
         requireArguments().let {
-            product= it.getParcelable("product")!!
+            product = it.getParcelable("product")!!
         }
         return binding.root
     }
@@ -54,66 +52,60 @@ class DetailSearchFragment : Fragment() , DetailProductContract.view{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        setdata()
+        searchDetail()
     }
 
+    /**
+     * inicializa los atributos
+     */
     private fun init() {
         viewPager = binding.sliderProductPhoto
-        adapterSlider= SliderAdapter(emptyList)
-        viewPager.adapter =adapterSlider
-        presenter= DetailSearchPresenter(this, product)
+        adapterSlider = SliderAdapter(emptyList)
+        viewPager.adapter = adapterSlider
+        presenter = DetailSearchPresenter(this, product)
 
     }
 
-    private fun setdata(){
-        val response =presenter.buscarDetalle()
-       /* CoroutineScope(Dispatchers.IO).launch {
-            val response =presenter.buscarDetalle()
-            getActivity()?.runOnUiThread{
-                if (response.isSuccessful) {
-
-
-                     emptyList.clear()
-                    for(item in response.body()?.pictures!!){
-                        emptyList.add(item.url)
-                    }
-                 //   emptyList.addAll(product)
-                    adapterSlider.notifyDataSetChanged()
-
-                }
-                //    else Toast.makeText(applicationContext,"error al cargar", Toast.LENGTH_LONG).show()
-
-            }
-        }*/
-
-
+    private fun searchDetail() {
+        val response = presenter.buscarDetalle()
 
     }
-    fun setSlider(list: List<PictureModel>){
+
+    /**
+     * Carga la lista de imagenes en el Slider
+     */
+
+    fun setSlider(list: List<PictureModel>) {
         emptyList.clear()
-        for(item in list){
+        for (item in list) {
             emptyList.add(item.url)
         }
-        //   emptyList.addAll(product)
         adapterSlider.notifyDataSetChanged()
     }
 
+    /**
+     * Mensaje de error general
+     */
     override fun showError() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Error de Servicio")
         builder.setMessage(R.string.mjsError)
         builder.setPositiveButton(
-            "Volver"
+                "Volver"
         ) { dialog, which -> findNavController().navigate(R.id.searchFragment) }
         val dialog = builder.create()
         dialog.show()
     }
 
+    /**
+     *  Carga los datos en la View
+     */
+
     override fun setData(detailProductModel: DetailProductModel) {
         setSlider(detailProductModel.listImage)
         binding.detailDescription.text = detailProductModel.descripton
         binding.detailTitle.text = detailProductModel.title
-        binding.detailPrice.text = detailProductModel.price.toString()
+        binding.detailPrice.text = "$ " + detailProductModel.price.toString()
 
     }
 

@@ -25,11 +25,15 @@ import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 
 
+/**
+ * Created by Jorge on 21,febrero,2021
+ */
 class MainActivity : AppCompatActivity()  {
 
 
     private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +43,9 @@ class MainActivity : AppCompatActivity()  {
         init()
 
     }
-
+    /**
+     * inicializa los atributos
+     */
     private fun init() {
       //  navController= findNavController(R.id.nav_host_fragment)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -47,6 +53,9 @@ class MainActivity : AppCompatActivity()  {
         NavigationUI.setupActionBarWithNavController(this,navController)
     }
 
+    /**
+     * crea el navigation bar
+     */
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp()

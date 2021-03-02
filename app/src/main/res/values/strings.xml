@@ -5,6 +5,7 @@
     <string name="searchBackgroundText">Buscar en Mercado Libre</string>
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
     <string name="mjsError">Parece que algo salió mal</string>
+    <string name="Description">Descripción</string>
 
 
 

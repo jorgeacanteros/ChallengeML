@@ -18,4 +18,30 @@
     <style name="splashScreen" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/gradient_splash</item>
     </style>
+
+    <style name="titleProduct" parent="Theme.ChallengeML">
+        <item name="android:textSize">25sp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+    </style>
+
+    <style name="priceProduct" parent="Theme.ChallengeML">
+        <item name="android:textSize">45dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+    </style>
+
+    <style name="detalleProduct" parent="Theme.ChallengeML">
+        <item name="android:textSize">16dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fontStyle">italic</item>
+    </style>
 </resources>

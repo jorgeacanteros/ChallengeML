@@ -22,50 +22,47 @@ import kotlin.coroutines.CoroutineContext
 /**
  * Created by Jorge on 27,febrero,2021
  */
-class DetailSearchPresenter(fragment: DetailSearchFragment, productModel:ProductModel): DetailProductContract.presenter {
+class DetailSearchPresenter(fragment: DetailSearchFragment, productModel: ProductModel) : DetailProductContract.presenter {
 
-    private var view=fragment
+    private var view = fragment
     private var product: ProductModel = productModel
-    private  lateinit var productDetail : DetailProductModel
+    private lateinit var productDetail: DetailProductModel
     private var interactor: DetailSearchService = DetailSearchService()
     var error: Boolean = false
 
-    override  fun buscarDetalle()  {
 
+    /**
+     * busca los los detalles del producto y la descripción del mismo
+     */
+    override fun buscarDetalle() {
         CoroutineScope(Dispatchers.IO).launch {
             val response: Response<DetaidProductResponse>? = interactor?.DetailSearchProduct(product.id)
-            if(response?.code() != 200){
-                error=true
-            }
-            else createProductDetail(response?.body(),buscarDescription())
+            if (response?.code() != 200) {
+                error = true
+            } else createProductDetail(response?.body(), buscarDescription())
             view.activity?.runOnUiThread {
-                if(error) view.showError()
+                if (error) view.showError()
                 else view.setData(productDetail)
             }
         }
 
-
-
     }
-
+    /**
+     * crea el modelo del producto para ser mostrado
+     */
     private fun createProductDetail(productDetailResponse: DetaidProductResponse?, description: String) {
-        productDetail = DetailProductModel(productDetailResponse?.title!!,description,productDetailResponse.pictures,productDetailResponse.price)
-
-
-
+        productDetail = DetailProductModel(productDetailResponse?.title!!, description, productDetailResponse.pictures, productDetailResponse.price)
     }
 
+    /**
+     * busca la descripción del producto
+     */
     override suspend fun buscarDescription(): String {
-
-        val response: Response<DescriptionProductResponse>? =interactor?.DescriptionProduct(product.id)
-        if(response?.code() != 200){
-            error=true
+        val response: Response<DescriptionProductResponse>? = interactor?.DescriptionProduct(product.id)
+        if (response?.code() != 200) {
+            error = true
             return ""
-        }
-        else return response!!.body()?.plain_text!!
-
+        } else return response!!.body()?.plain_text!!
     }
-
-
 
 }
